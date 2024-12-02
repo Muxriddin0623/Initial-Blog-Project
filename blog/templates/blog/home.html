@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<h1>Recent Posts</h1>
+<ul>
+    {% for post in posts %}
+        <li>
+            <h2><a href="/post/{{ post.id }}/">{{ post.title }}</a></h2>
+            <p>{{ post.content|truncatewords:20 }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

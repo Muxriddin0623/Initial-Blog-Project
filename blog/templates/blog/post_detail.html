@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }} - My Blog{% endblock %}
+
+{% block content %}
+<div class="post-detail">
+    <h1>{{ post.title }}</h1>
+    <p>By {{ post.author.username }} | {{ post.created_at|date:"M d, Y" }}</p>
+    <img src="{{ post.image.url }}" class="img-fluid mb-3" alt="{{ post.title }}">
+    <p>{{ post.content }}</p>
+    <p><strong>Tags:</strong> {{ post.tags }}</p>
+    <p><strong>Views:</strong> {{ post.views }}</p>
+</div>
+
+<h2>Comments</h2>
+<ul>
+    {% for comment in comments %}
+        <li><strong>{{ comment.user.username }}</strong>: {{ comment.content }}</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    <h3>Leave a Comment</h3>
+    <form method="POST" action="/post/{{ post.id }}/comment/">
+        {% csrf_token %}
+        <textarea name="content" class="form-control mb-2" rows="4" required></textarea>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% else %}
+    <p><a href="/login/">Login</a> to leave a comment.</p>
+{% endif %}
+{% endblock %}
